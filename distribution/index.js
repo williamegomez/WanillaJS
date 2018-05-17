@@ -26,13 +26,27 @@ module.exports = function component(_ref) {
     });
   }
 
+  this.setAttributes = function () {
+    var _this = this;
+
+    this.attributes.forEach(function (att) {
+      _this.node.setAttribute(att.attributeName, att.attributeValue);
+    });
+  };
+
   this.createNode = function () {
     var index = this.componentsName.indexOf(this.domTree[0].parent);
     if (index !== -1) {
       var el = new this.components[index]();
+      el.attributes = this.domTree[0].attributes;
+      el.setAttributes();
       return el.node;
     } else {
-      return document.createElement(this.domTree[0].parent);
+      var el = document.createElement(this.domTree[0].parent);
+      this.domTree[0].attributes.forEach(function (att) {
+        el.setAttribute(att.attributeName, att.attributeValue);
+      });
+      return el;
     }
   };
 

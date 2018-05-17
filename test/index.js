@@ -1,9 +1,9 @@
-import component from 'wanilla-js'
+import component from './../distribution'
 
 function Button() {
   component.call(this,{
     template: 
-    `<li>
+    `<li class="itemList">
       <span>Hola a todos</span>
     </li>`,
     components: []
@@ -13,12 +13,12 @@ function Button() {
 function Cta() {
   component.call(this,{
     template: 
-    `<div>
-      <Button class="btn btn-active">
+    `<Button class="container">
+      <Button>
       </Button>
-      <Button class="btn btn-active">
+      <Button class="rojo">
       </Button>
-    </div>`,
+    </Button>`,
     components: [
       Button
     ]
