@@ -9,7 +9,7 @@ import component from 'wanilla-js'
 function Button() {
   component.call(this,{
     template: 
-    `<li>
+    `<li class="itemList">
       <span>Hola a todos</span>
     </li>`,
     components: []
@@ -19,12 +19,12 @@ function Button() {
 function Cta() {
   component.call(this,{
     template: 
-    `<div>
-      <Button class="btn btn-active">
+    `<Button class="container">
+      <Button>
       </Button>
-      <Button class="btn btn-active">
+      <Button class="rojo">
       </Button>
-    </div>`,
+    </Button>`,
     components: [
       Button
     ]
@@ -42,19 +42,20 @@ Results in console:
 
 Button component:
 ```
-<li>
-    <span></span>
-</li> 
+<li class="itemList">
+  <span></span>
+</li>
 ```
 
 Cta component:
 ```
-<div>
-    <li>
-        <span></span>
-    </li>
-    <li>
-        <span></span>
-    </li>
-</div>
+<li class="container itemList">
+  <span></span>
+  <li class="itemList">
+    <span></span>
+  </li>
+  <li class="itemList">
+    <span></span>
+  </li>
+</li>
 ```

@@ -1,7 +1,7 @@
-import component from 'wanilla-js'
+import Component from 'wanilla-js'
 
 function Button() {
-  component.call(this,{
+  Component.call(this,{
     template: 
     `<li class="itemList">
       <span>Hola a todos</span>
@@ -11,7 +11,7 @@ function Button() {
 }
 
 function Cta() {
-  component.call(this,{
+  Component.call(this,{
     template: 
     `<Button class="container">
       <Button>
