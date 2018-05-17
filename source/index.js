@@ -2,24 +2,31 @@
 
 import domTreeCreator from 'dom-tree-creator'
 
-module.exports = function component ({template = '', components = []}) {
+module.exports = function component ({template = '', components = [], data = {}}) {
   function setAttributeHTML (node, attributes) {
     attributes.forEach(att => {
       var previous = node.getAttribute(att.attributeName)
-      if (previous) {
-        node.setAttribute(att.attributeName, `${att.attributeValue} ${previous}`)
-      }
-      else {
-        node.setAttribute(att.attributeName, att.attributeValue)
+      if (att.attributeName!=='data'){
+        if (previous) {
+          node.setAttribute(att.attributeName, `${att.attributeValue} ${previous}`)
+        }
+        else {
+          node.setAttribute(att.attributeName, att.attributeValue)
+        }
       }
     })
   }
   
-  function appendNodes (node, children, componentsName, components) {
+  function appendNodes (node, children, componentsName, components, data) {
     children.forEach((el, index) => {
       var index = componentsName.indexOf(el.parent)
       if (index !== -1) {
-        var child = new components[index]()
+        var props = el.attributes.filter(value => value.attributeName == 'data')
+
+        var child = (props.length > 0) ? 
+            new components[index](data[props[0]['attributeValue']])
+          : new components[index]()
+
         node.appendChild(child.node)
         child.attributes = el.attributes
         child.setAttributesObject()
@@ -27,7 +34,7 @@ module.exports = function component ({template = '', components = []}) {
         var child = document.createElement(el.parent)
         node.appendChild(child)
         setAttributeHTML(child, el.attributes)
-        if (el.children.length) appendNodes(child, el.children)
+        if (el.children.length) appendNodes(child, el.children, componentsName, components, data)
       }
     })
   }
@@ -35,11 +42,13 @@ module.exports = function component ({template = '', components = []}) {
   this.setAttributesObject = function () {
     this.attributes.forEach(att => {
       var previous = this.node.getAttribute(att.attributeName)
-      if (previous) {
-        this.node.setAttribute(att.attributeName, `${att.attributeValue} ${previous}`)
-      }
-      else {
-        this.node.setAttribute(att.attributeName, att.attributeValue)
+      if (att.attributeName!=='data'){
+        if (previous) {
+          this.node.setAttribute(att.attributeName, `${att.attributeValue} ${previous}`)
+        }
+        else {
+          this.node.setAttribute(att.attributeName, att.attributeValue)
+        }
       }
     })
   }
@@ -58,7 +67,18 @@ module.exports = function component ({template = '', components = []}) {
       return el
     }
   }
+
+  var props = null
+  if (arguments.length > 1) {
+    props = arguments[1]
+  }
   
+  if (props.length > 0) {
+    this.data = props[0]
+  } else {
+    this.data = data
+  }
+
   this.template = template
   this.components = components
   this.componentsName = components.map(value => value.name)
@@ -71,7 +91,7 @@ module.exports = function component ({template = '', components = []}) {
     this.children = this.domTree[0].children
     this.attributes = this.domTree[0].attributes
     this.node = this.createNode()
-    if (this.children.length) appendNodes(this.node, this.children, this.componentsName, this.components)
+    if (this.children.length) appendNodes(this.node, this.children, this.componentsName, this.components, this.data)
   }
 }
 

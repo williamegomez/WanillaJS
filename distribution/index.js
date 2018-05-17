@@ -10,24 +10,33 @@ module.exports = function component(_ref) {
   var _ref$template = _ref.template,
       template = _ref$template === undefined ? '' : _ref$template,
       _ref$components = _ref.components,
-      components = _ref$components === undefined ? [] : _ref$components;
+      components = _ref$components === undefined ? [] : _ref$components,
+      _ref$data = _ref.data,
+      data = _ref$data === undefined ? {} : _ref$data;
 
   function setAttributeHTML(node, attributes) {
     attributes.forEach(function (att) {
       var previous = node.getAttribute(att.attributeName);
-      if (previous) {
-        node.setAttribute(att.attributeName, att.attributeValue + ' ' + previous);
-      } else {
-        node.setAttribute(att.attributeName, att.attributeValue);
+      if (att.attributeName !== 'data') {
+        if (previous) {
+          node.setAttribute(att.attributeName, att.attributeValue + ' ' + previous);
+        } else {
+          node.setAttribute(att.attributeName, att.attributeValue);
+        }
       }
     });
   }
 
-  function appendNodes(node, children, componentsName, components) {
+  function appendNodes(node, children, componentsName, components, data) {
     children.forEach(function (el, index) {
       var index = componentsName.indexOf(el.parent);
       if (index !== -1) {
-        var child = new components[index]();
+        var props = el.attributes.filter(function (value) {
+          return value.attributeName == 'data';
+        });
+
+        var child = props.length > 0 ? new components[index](data[props[0]['attributeValue']]) : new components[index]();
+
         node.appendChild(child.node);
         child.attributes = el.attributes;
         child.setAttributesObject();
@@ -35,7 +44,7 @@ module.exports = function component(_ref) {
         var child = document.createElement(el.parent);
         node.appendChild(child);
         setAttributeHTML(child, el.attributes);
-        if (el.children.length) appendNodes(child, el.children);
+        if (el.children.length) appendNodes(child, el.children, componentsName, components, data);
       }
     });
   }
@@ -45,10 +54,12 @@ module.exports = function component(_ref) {
 
     this.attributes.forEach(function (att) {
       var previous = _this.node.getAttribute(att.attributeName);
-      if (previous) {
-        _this.node.setAttribute(att.attributeName, att.attributeValue + ' ' + previous);
-      } else {
-        _this.node.setAttribute(att.attributeName, att.attributeValue);
+      if (att.attributeName !== 'data') {
+        if (previous) {
+          _this.node.setAttribute(att.attributeName, att.attributeValue + ' ' + previous);
+        } else {
+          _this.node.setAttribute(att.attributeName, att.attributeValue);
+        }
       }
     });
   };
@@ -67,6 +78,19 @@ module.exports = function component(_ref) {
     }
   };
 
+  var props = null;
+  if (arguments.length > 1) {
+    props = arguments[1];
+  }
+
+  if (props.length > 0) {
+    this.data = props[0];
+  } else {
+    this.data = data;
+  }
+
+  console.log(this.data);
+
   this.template = template;
   this.components = components;
   this.componentsName = components.map(function (value) {
@@ -80,6 +104,6 @@ module.exports = function component(_ref) {
     this.children = this.domTree[0].children;
     this.attributes = this.domTree[0].attributes;
     this.node = this.createNode();
-    if (this.children.length) appendNodes(this.node, this.children, this.componentsName, this.components);
+    if (this.children.length) appendNodes(this.node, this.children, this.componentsName, this.components, this.data);
   }
 };
