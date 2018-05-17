@@ -4,10 +4,10 @@ A easy to use vanilla library to create components like Vue JS and React JS.
 
 
 ```
-import component from 'wanilla-js'
+import Component from 'wanilla-js'
 
 function Button() {
-  component.call(this,{
+  Component.call(this,{
     template: 
     `<li class="itemList">
       <span>Hola a todos</span>
@@ -17,7 +17,7 @@ function Button() {
 }
 
 function Cta() {
-  component.call(this,{
+  Component.call(this,{
     template: 
     `<Button class="container">
       <Button>
@@ -54,7 +54,7 @@ Cta component:
   <li class="itemList">
     <span></span>
   </li>
-  <li class="itemList">
+  <li class="rojo itemList">
     <span></span>
   </li>
 </li>
