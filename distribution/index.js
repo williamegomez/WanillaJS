@@ -89,8 +89,6 @@ module.exports = function component(_ref) {
     this.data = data;
   }
 
-  console.log(this.data);
-
   this.template = template;
   this.components = components;
   this.componentsName = components.map(function (value) {

@@ -1,6 +1,6 @@
 {
   "name": "wanilla-js",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Emulate a component library using Vanilla JS",
   "main": "./distribution/index.js",
   "scripts": {
