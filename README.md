@@ -3,59 +3,107 @@
 A easy to use vanilla library to create components like Vue JS and React JS.
 
 
+Simple component:
 ```
 import Component from 'wanilla-js'
 
+function Text() {
+  Component.call(this,{
+    template: 
+    `<span>Hi everyone</span>`,
+    components: []
+  },
+  arguments)
+}
+```
+
+Render in HTML:
+```
+<span>Hi everyone</span>
+```
+
+Component based on a primary one:
+```
 function Button() {
   Component.call(this,{
     template: 
-    `<li class="itemList">
-      <span>Hola a todos</span>
-    </li>`,
-    components: []
-  })
+    `<button class="btn">
+      <Text></Text>
+    </button>`,
+    components: [
+      Text
+    ]
+  },
+  arguments)
 }
+```
 
-function Cta() {
+Render in HTML:
+
+```
+<button class="btn-list btn">
+  <span></span>
+</button>
+```
+
+A bigger component passing props to its childrens:
+```
+function List() {
   Component.call(this,{
     template: 
-    `<Button class="container">
-      <Button>
-      </Button>
-      <Button class="rojo">
-      </Button>
-    </Button>`,
+    `<ul>
+      <li class="item-list">
+        <Button class="btn-list" data="btnLogin"></Button>
+      </li>
+      <li class="item-list">
+        <Button class="btn-list" data="btnLogout">
+        </Button>
+      </li>
+      <li class="item-list">
+        <Button class="btn-list" data="btnHelp">
+        </Button>
+      </li>
+    </ul>
+    `,
     components: [
       Button
-    ]
-  })
+    ],
+    data: {
+      btnLogin: {
+        text: "Login"
+      },
+      btnLogout: {
+        text: "Logout"
+      },
+      btnHelp: {
+        help: "Do you need help?"
+      }
+    }
+  },
+  arguments)
 }
 
-var btnLogin = new Button()
-console.log(btnLogin.node)
-
-var btnLogin = new Cta()
-console.log(btnLogin.node)
+var listButtons = new List()
 ```
 
-Results in console:
+Render in HTML:
 
-Button component:
 ```
-<li class="itemList">
-  <span></span>
-</li>
-```
-
-Cta component:
-```
-<li class="container itemList">
-  <span></span>
-  <li class="itemList">
-    <span></span>
+<ul>
+  <li class="item-list">
+    <button class="btn-list btn">
+      <span></span>
+    </button>
   </li>
-  <li class="rojo itemList">
-    <span></span>
+  <li class="item-list">
+    <button class="btn-list btn">
+      <span></span>
+    </button>
   </li>
-</li>
+  <li class="item-list">
+    <button class="btn-list btn">
+      <span></span>
+    </button>
+  </li>
+</ul>
 ```
