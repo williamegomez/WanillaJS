@@ -1,4 +1,4 @@
-import component from './../distribution'
+import component from 'wanilla-js'
 
 function Button() {
   component.call(this,{
