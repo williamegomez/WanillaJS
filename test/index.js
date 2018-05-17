@@ -1,4 +1,4 @@
-import Component from 'wanilla-js'
+import Component from './../distribution'
 
 function Button() {
   Component.call(this,{
@@ -14,9 +14,9 @@ function Cta() {
   Component.call(this,{
     template: 
     `<Button class="container">
-      <Button>
+      <Button class="1">
       </Button>
-      <Button class="rojo">
+      <Button class="2">
       </Button>
     </Button>`,
     components: [
