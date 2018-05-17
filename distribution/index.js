@@ -30,7 +30,12 @@ module.exports = function component(_ref) {
     var _this = this;
 
     this.attributes.forEach(function (att) {
-      _this.node.setAttribute(att.attributeName, att.attributeValue);
+      var previous = _this.node.getAttribute(att.attributeName);
+      if (previous) {
+        _this.node.setAttribute(att.attributeName, att.attributeValue + ' ' + previous);
+      } else {
+        _this.node.setAttribute(att.attributeName, att.attributeValue);
+      }
     });
   };
 
@@ -44,7 +49,12 @@ module.exports = function component(_ref) {
     } else {
       var el = document.createElement(this.domTree[0].parent);
       this.domTree[0].attributes.forEach(function (att) {
-        el.setAttribute(att.attributeName, att.attributeValue);
+        var previous = el.getAttribute(att.attributeName);
+        if (previous) {
+          el.setAttribute(att.attributeName, att.attributeValue + ' ' + previous);
+        } else {
+          el.setAttribute(att.attributeName, att.attributeValue);
+        }
       });
       return el;
     }
